@@ -7,6 +7,6 @@ namespace ShopBackend.Data {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options){
         }
 
-        public DbSet<ProdutoModel> Produtos { get; set; }
+        public DbSet<ProductModel> Products { get; set; }
     }
 }
