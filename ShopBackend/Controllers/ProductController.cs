@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShopBackend.Data;
 using ShopBackend.DTOs.Produto;
 using ShopBackend.Models;
 
 namespace ShopBackend.Controllers {
-    [Route("api/product/[controller]")]
+    [Route("api/products/[controller]")]
     [ApiController]
     public class ProductController : ControllerBase {
 
@@ -36,7 +35,7 @@ namespace ShopBackend.Controllers {
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductReadDto>> GetProductsPerId(int id) {
 
-            var produto = await _context.Products
+            var product = await _context.Products
                 .Where(p => p.Id == id)
                 .Select(p => new ProductReadDto {
                     Id = p.Id,
@@ -49,10 +48,10 @@ namespace ShopBackend.Controllers {
                 })
                 .FirstOrDefaultAsync();
 
-            if (produto == null)
+            if (product == null)
                 return NotFound();
 
-            return Ok(produto);
+            return Ok(product);
         }
 
         [HttpPost]
@@ -90,22 +89,19 @@ namespace ShopBackend.Controllers {
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProduto(int id, [FromBody] ProductCreateDto dto) {
+        public async Task<IActionResult> UpdateProduct(int id, [FromBody] ProductPutDto dto) {
 
-            var produto = await _context.Products.FindAsync(id);
+            var product = await _context.Products.FindAsync(id);
 
-            if (produto == null)
+            if (product == null)
                 return NotFound();
 
-            produto.Name = dto.Name;
-            produto.Description = dto.Description;
-            produto.Price = dto.Price;
-            produto.StockQuantity = dto.StockQuantity;
-            produto.Barcode = dto.Barcode;
-            produto.Brand = dto.Brand;
-            produto.UpdatedAt = DateTime.UtcNow;
-
-            _context.Entry(produto).State = EntityState.Modified;
+            product.Name = dto.Name;
+            product.Description = dto.Description;
+            product.Price = dto.Price;
+            product.StockQuantity = dto.StockQuantity;
+            product.Brand = dto.Brand;
+            product.UpdatedAt = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
             return NoContent();
@@ -114,23 +110,20 @@ namespace ShopBackend.Controllers {
         [HttpPatch("{id}")]
         public async Task<IActionResult> PatchProduct(int id, [FromBody] ProductPatchDto dto) {
 
-            var produto = await _context.Products.FindAsync(id);
+            var product = await _context.Products.FindAsync(id);
 
-            if (produto == null)
+            if (product == null)
                 return NotFound();
             if (dto.Name != null)
-                produto.Name = dto.Name;
+                product.Name = dto.Name;
             if (dto.Description != null)
-                produto.Description = dto.Description;
+                product.Description = dto.Description;
             if (dto.Price.HasValue)
-                produto.Price = dto.Price.Value;
+                product.Price = dto.Price.Value;
             if (dto.StockQuantity.HasValue)
-                produto.StockQuantity = dto.StockQuantity.Value;
+                product.StockQuantity = dto.StockQuantity.Value;
 
-            produto.UpdatedAt = DateTime.UtcNow;
-
-            _context.Entry(produto).State = EntityState.Modified;
-
+            product.UpdatedAt = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
             return NoContent();
@@ -139,11 +132,11 @@ namespace ShopBackend.Controllers {
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(int id) {
 
-            var produto = await _context.Products.FindAsync(id);
+            var product = await _context.Products.FindAsync(id);
 
-            if (produto == null)
+            if (product == null)
                 return NotFound();
-            _context.Products.Remove(produto);
+            _context.Products.Remove(product);
 
             await _context.SaveChangesAsync();
             return NoContent();

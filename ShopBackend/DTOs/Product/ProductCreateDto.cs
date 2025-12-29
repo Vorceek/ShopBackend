@@ -2,7 +2,6 @@
 
 namespace ShopBackend.DTOs.Produto {
     public class ProductCreateDto {
-        internal readonly string Descricao;
 
         [Required(ErrorMessage = "Product name is required.")]
         [StringLength(150)]
