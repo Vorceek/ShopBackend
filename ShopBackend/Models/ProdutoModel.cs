@@ -26,6 +26,6 @@ namespace ShopBackend.Models {
         public string Marca { get; set; } = default!;
 
         public DateTime DataDeCriacao { get; set; }
-        public DateTime DataDeModificacao { get; set; }
+        public DateTime? DataDeModificacao { get; set; }
     }
 }
